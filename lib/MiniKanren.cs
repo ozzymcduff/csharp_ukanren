@@ -14,7 +14,14 @@ namespace MicroKanren{
 
     //# Converts Lisp AST to a String. Algorithm is a recursive implementation of
     //# http://www.mat.uc.pt/~pedro/cientificos/funcional/lisp/gcl_22.html#SEC1238.
-    /*def to_s(cons_in_cdr = false)
+    public override String ToString(){
+        return ToString(false);
+    }
+    public String ToString(bool consInCdr){
+       var str = new StringBuilder(consInCdr ? "" : "(");
+    
+
+      /*def to_s(cons_in_cdr = false)
       str = cons_in_cdr ? '' : '('
 
       str += self.car.is_a?(Cons) ? self.car.to_s : atom_string(self.car)
@@ -30,6 +37,7 @@ namespace MicroKanren{
 
       cons_in_cdr ? str : str << ')'
     end*/
+    }
 
     /*def ==(other)
       other.is_a?(Cons) ? self.car == other.car && self.cdr == other.cdr : false
