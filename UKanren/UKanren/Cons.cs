@@ -1,13 +1,11 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Text;
 
 namespace MicroKanren
 {
     public abstract class Cons
     {
-
         public static EmptyCons Nil
         {
             get { return new EmptyCons(); }
@@ -31,7 +29,7 @@ namespace MicroKanren
 
         public override bool Equals(object obj)
         {
-            return obj is Cons ? Equals(obj as Cons) : false;
+            return obj is Cons && Equals(obj as Cons);
         }
 
         public virtual bool Equals(Cons other)
@@ -76,23 +74,20 @@ namespace MicroKanren
 
     public class Cons<T1, T2> : Cons
     {
-        //attr_reader :car, :cdr
-        public override Object Car
-        {
-            get { return CarT; }
-        }
-        public override Object Cdr
-        {
-            get { return CdrT; }
-        }
-
+        public override Object Car { get { return CarT; } }
+        public override Object Cdr { get { return CdrT; } }
         public T1 CarT { get; private set; }
         public T2 CdrT { get; private set; }
-        //# Returns a Cons cell (read: instance) that is also marked as such for
-        //# later identification.
+
+        /// <summary>
+        /// Returns a Cons cell (read: instance) that is also marked as such for
+        /// later identification.
+        /// </summary>
+        /// <param name="car"></param>
+        /// <param name="cdr"></param>
         public Cons(T1 car, T2 cdr)
         {
-            if (Equals(car , null))
+            if (Equals(car, null))
             {
                 throw new ArgumentException("car");
             }
@@ -103,8 +98,11 @@ namespace MicroKanren
             CarT = car; CdrT = cdr;
         }
 
-        //# Converts Lisp AST to a String. Algorithm is a recursive implementation of
-        //# http://www.mat.uc.pt/~pedro/cientificos/funcional/lisp/gcl_22.html#SEC1238.
+        /// <summary>
+        /// Converts Lisp AST to a String. Algorithm is a recursive implementation of
+        /// http://www.mat.uc.pt/~pedro/cientificos/funcional/lisp/gcl_22.html#SEC1238.
+        /// </summary>
+        /// <returns></returns>
         public override String ToString()
         {
             return ToString(false);

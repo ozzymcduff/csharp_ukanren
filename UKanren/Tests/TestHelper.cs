@@ -8,6 +8,6 @@ namespace Tests
         {
             return new Cons<T1, T2>(car, cdr);
         }
-        public object nil { get { return new EmptyCons(); } }
+        public object nil { get { return Cons.Nil; } }
     }
 }
