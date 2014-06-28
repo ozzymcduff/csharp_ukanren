@@ -89,45 +89,66 @@ namespace Tests
             res.ToString().must_equal(expected_ast_string);
         }
 
-        /*require 'spec_helper'
+        [Test]
+        public void It_ground_appendo2()
+        {
+            var res = car(((Func<Object>) ground_appendo2()(empty_state))()).ToString();
+            res.must_equal("((([2] b) ([1]) ([0] . a)) . 3)");
+        }
 
-        describe MicroKanren::Core do
+        [Test]
+        public void It_appendo()
+        {
+            var res = take(2, call_appendo()(empty_state)).ToString();
+            res.must_equal(
+                "(((([0] [1] [2] [3]) ([2] . [3]) ([1])) . 4) ((([0] [1] [2] [3]) ([2] . [6]) ([5]) ([3] [4] . [6]) ([1] [4] . [5])) . 7))");
+        }
 
+        [Test]
+        public void It_appendo2()
+        {
+            var res = take(2, call_appendo2()(empty_state)).ToString();
+            res.must_equal(
+                "(((([0] [1] [2] [3]) ([2] . [3]) ([1])) . 4) ((([0] [1] [2] [3]) ([3] [4] . [6]) ([2] . [6]) ([5]) ([1] [4] . [5])) . 7))");
+        }
 
-          it "ground appendo2" do
-            res = car(ground_appendo2.call(empty_state).call).to_s
-            res.must_equal '((([2] b) ([1]) ([0] . a)) . 3)'
-          end
+        [Test]
+        public void It_reify_1st_across_appendo()
+        {
 
-          it "appendo" do
-            res = take(2, call_appendo.call(empty_state)).to_s
-            res.must_equal '(((([0] [1] [2] [3]) ([2] . [3]) ([1])) . 4) ((([0] [1] [2] [3]) ([2] . [6]) ([5]) ([3] [4] . [6]) ([1] [4] . [5])) . 7))'
-          end
+            /*          it "reify-1st across appendo" do
+                    res = map(method(:reify_1st).to_proc, take(2, call_appendo.call(empty_state)))
 
-          it "appendo2" do
-            res = take(2, call_appendo2.call(empty_state)).to_s
-            res.must_equal '(((([0] [1] [2] [3]) ([2] . [3]) ([1])) . 4) ((([0] [1] [2] [3]) ([3] [4] . [6]) ([2] . [6]) ([5]) ([1] [4] . [5])) . 7))'
-          end
+                    # Expected result in scheme:
+                    # ((() _.0 _.0) ((_.0) _.1 (_.0 . _.1)))
 
-          it "reify-1st across appendo" do
-            res = map(method(:reify_1st).to_proc, take(2, call_appendo.call(empty_state)))
+                    res.to_s.must_equal '((nil _.0 _.0) ((_.0) _.1 (_.0 . _.1)))'
+                  end
+        */
+            Assert.Fail();
+        }
 
-            # Expected result in scheme:
-            # ((() _.0 _.0) ((_.0) _.1 (_.0 . _.1)))
-
-            res.to_s.must_equal '((nil _.0 _.0) ((_.0) _.1 (_.0 . _.1)))'
-          end
-
-          it "reify-1st across appendo2" do
+        [Test]
+        public void It_reify_1st_across_appendo2()
+        {
+            /* it "reify-1st across appendo2" do
             res = map(method(:reify_1st).to_proc, take(2, call_appendo2.call(empty_state)))
             res.to_s.must_equal '((nil _.0 _.0) ((_.0) _.1 (_.0 . _.1)))'
           end
+*/
+            Assert.Fail();
+        }
 
-          it "many non-ans" do
-            res = take(1, many_non_ans.call(empty_state))
-            res.to_s.must_equal '(((([0] . 3)) . 1))'
-          end
-        end
-        */
+        [Test]
+        public void It_many_non_ans()
+        {
+            /*it "many non-ans" do
+                res = take(1, many_non_ans.call(empty_state))
+                res.to_s.must_equal '(((([0] . 3)) . 1))'
+              end
+            */
+            Assert.Fail();
+        }
+
     }
 }
