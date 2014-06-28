@@ -1,4 +1,5 @@
 ﻿using System;
+using MicroKanren;
 using NUnit.Framework;
 
 namespace Tests
@@ -25,5 +26,11 @@ namespace Tests
         {
             Assert.Throws<TException>(() => a());
         }
+
+        public static void must_be_nil(this object o)
+        {
+            Assert.That(o,Is.EqualTo(Cons.Nil));
+        }
+
     }
 }

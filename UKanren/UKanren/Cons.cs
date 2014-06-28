@@ -36,6 +36,10 @@ namespace MicroKanren
         {
             if (other is EmptyCons && this is EmptyCons)
                 return true;
+            if (other is EmptyCons && !(this is EmptyCons))
+                return false;
+            if (!(other is EmptyCons) && this is EmptyCons)
+                return false; 
             return Equals(Car, other.Car) && Equals(Cdr, other.Cdr);
         }
 
@@ -47,6 +51,10 @@ namespace MicroKanren
             }
         }
 
+        public bool IsNil()
+        {
+            return Equals(this, Nil);
+        }
     }
 
     public class EmptyCons : Cons
@@ -74,8 +82,9 @@ namespace MicroKanren
 
     public class Cons<T1, T2> : Cons
     {
-        public override Object Car { get { return CarT; } }
-        public override Object Cdr { get { return CdrT; } }
+        public override Object Car { get { return CarT ; } }
+        public override Object Cdr { get { return CdrT ; } }
+
         public T1 CarT { get; private set; }
         public T2 CdrT { get; private set; }
 

@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Describe_Core.cs" />
     <Compile Include="TestHelper.cs" />
     <Compile Include="Describe_Cons_ctor.cs" />
     <Compile Include="Describe_cons_equals.cs" />
