@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>MicroKanren</id>
+    <title>MicroKanren</title>
+    <version>0.0.2</version>
+    <authors>Justin Leitgeb, Oskar Gewalli</authors>
+    <owners>Oskar Gewalli</owners>
+    <licenseUrl>http://www.opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://github.com/wallymathieu/csharp_ukanren</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A port of MicroKanren in Ruby to CSharp.</description>
+    <copyright>Copyright 2014</copyright>
+    <!--<releaseNotes></releaseNotes>-->
+    <references>
+      <reference file="MikroKanren.dll" />
+    </references>
+  </metadata>
+</package>
