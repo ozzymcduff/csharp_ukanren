@@ -50,5 +50,11 @@ namespace MicroKanren
         {
             return Equals(obj as Var);
         }
+
+        public override int GetHashCode()
+        {
+            return (_array != null ? _array.GetHashCode() : 0);
+        }
+
     }
 }

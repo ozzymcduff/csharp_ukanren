@@ -1,10 +1,11 @@
-require "bundler/gem_tasks"
+require 'albacore'
 
-require 'rake/testtask'
-
-Rake::TestTask.new do |t|
-  t.libs << "spec"
-  t.test_files = FileList['spec/**/*_spec.rb']
+desc "build using msbuild"
+msbuild :build do |msb|
+    msb.properties :configuration => :Debug
+    msb.targets :Clean, :Rebuild
+    msb.verbosity = 'quiet'
+    msb.solution =File.join("UKanren", "UKanren.sln")
 end
 
-task :default => :test
+

@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in ruby_ukanren.gemspec
-gemspec
+gem 'rake'
+gem 'albacore'
+gem 'rubyzip',  "~> 0.9.9"
