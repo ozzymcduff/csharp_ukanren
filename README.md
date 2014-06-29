@@ -49,12 +49,11 @@ The code in this gem is closely based on the following sources:
 
 ## Dependencies
 
-This project requires Ruby 2.0 or higher. You can see which Rubies work with
-this project in the [Travis CI Build Status](https://travis-ci.org/jsl/ruby_ukanren).
+This project requires .net 4.0 or higher.
 
 ## Contributing
 
-1. Fork it ( http://github.com/jsl/ruby_ukanren/fork )
+1. Fork it ( https://github.com/wallymathieu/csharp_ukanren/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
