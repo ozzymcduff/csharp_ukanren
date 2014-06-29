@@ -61,14 +61,14 @@ namespace MicroKanren
             else if (is_pair(u) && is_pair(v))
             {
                 var s2 = unify(car(u), car(v), s);
-                if (truthy(s2) )
+                if (truthy(s2))
                     return unify(cdr(u), cdr(v), s2);
                 return nil;
             }
             else
             {
                 //# Object identity (equal?) seems closest to eqv? in Scheme.
-                if (Equals(u, v) )
+                if (Equals(u, v))
                     return s;
                 return nil;
             }
@@ -89,10 +89,9 @@ namespace MicroKanren
             {
                 return mzero;
             }
-            else if (d is Func<object>)
+            else if (is_procedure(d))
             {
-                var v = new Func<object>(() => bind(((Func<object>)d).call(), g));
-                return v;
+                return new Func<object>(() => bind(call(d), g));
             }
             else
             {
@@ -105,13 +104,11 @@ namespace MicroKanren
             {
                 return d2;
             }
-            else if (d1 is Func<object>)
+            else if (is_procedure(d1))
             {
-                //elsif procedure?(d1)
-                //-> { mplus(d2, d1.call) }
                 Func<object> a = () =>
                 {
-                    return mplus(d2, ((Func<object>)d1).call());
+                    return mplus(d2, call(d1));
                 };
                 return a;
             }
@@ -126,14 +123,6 @@ namespace MicroKanren
         /// </summary>
         public Func<object, object> eq(Object u, Object v)
         {
-
-            /* 
-    def eq(u, v)
-      ->(s_c) {
-        s = unify(u, v, car(s_c))
-        s ? unit(cons(s, cdr(s_c))) : mzero
-      }
-*/
             return (s_c) =>
             {
                 var s = unify(u, v, car(s_c));
@@ -152,6 +141,52 @@ namespace MicroKanren
                 return f.call(var(c)).call(cons(car(s_c), x));
             };
         }
+
+        public Symbol reify_name(object n)
+        {
+            return "_.#{n}".to_sym();
+        }
+
+        public Object reify_s(object v, object s)
+        {
+            v = walk(v, s);
+            if (is_var(v))
+            {
+                var n = reify_name(length((Cons)s));
+                return cons(cons(v, n), s);
+            }
+            else if (is_pair(v))
+            {
+                return reify_s(cdr(v), reify_s(car(v), s));
+            }
+            else
+            {
+                return s;
+            }
+
+        }
+
+
+        public Object reify_1st(object s_c)
+        {
+            var v = walk_star(0, car(s_c));
+            return walk_star(v, reify_s(v, nil));
+        }
+
+        public Object walk_star(object v, object s)
+        {
+            v = walk(v, s);
+            if (is_var(v)){
+                return v;
+            }
+            else if (is_pair(v)){
+                return cons(walk_star(car(v), s),
+                    walk_star(cdr(v), s));
+            }
+            //else
+            return v;
+        }
+
 
     }
 }

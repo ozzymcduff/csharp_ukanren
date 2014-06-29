@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
@@ -19,7 +20,7 @@ namespace MicroKanren
 
         public static string Inspect(this IEnumerable e)
         {
-            return "["+String.Join(", ", e.Cast<Object>())+"]";
+            return "[" + String.Join(", ", e.Cast<Object>()) + "]";
         }
 
         public static T2 call<T1, T2>(this Func<T1, T2> f, T1 arg)
@@ -37,5 +38,14 @@ namespace MicroKanren
             return t;
         }
 
+        public static bool empty<T>(this IEnumerable<T> array)
+        {
+            return array == null || !array.Any();
+        }
+
+        public static Symbol to_sym(this string c)
+        {
+            return new Symbol(c);
+        }
     }
 }

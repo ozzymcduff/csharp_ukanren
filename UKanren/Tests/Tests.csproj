@@ -55,6 +55,8 @@
     <Compile Include="Describe_Lisp_list.cs" />
     <Compile Include="Describe_Lisp_map.cs" />
     <Compile Include="Describe_Lisp_spec.cs" />
+    <Compile Include="Describe_MiniKanren_wrappers.cs" />
+    <Compile Include="Describe_pull.cs" />
     <Compile Include="TestHelper.cs" />
     <Compile Include="Describe_Cons_ctor.cs" />
     <Compile Include="Describe_cons_equals.cs" />

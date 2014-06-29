@@ -14,38 +14,24 @@ namespace Tests
     public class Describe_Lisp_pair : TestHelper
     {
         [Test]
-        public void It_1()
+        public void It_is_false_for_an_integer()
         {
-    //it "is false for an integer" do
-    //  pair?(1).must_equal false
-    //end
-            Assert.Fail();
+            is_pair(1).must_equal(false);
         }
         [Test]
-        public void It_2()
+        public void It_is_true_for_a_list_with_an_int_in_the_car_and_cdr()
         {
-    //it "is true for a list with an int in the car and cdr" do
-    //  pair?(cons(1, 2)).must_equal true
-    //end
-            Assert.Fail();
+            is_pair(cons(1, 2)).must_equal(true);
         }
         [Test]
-        public void It_3()
+        public void It_is_true_for_a_proper_list()
         {
-
-    //it "is true for a proper list" do
-    //  pair?(cons(1, cons(2, nil))).must_equal true
-    //end
-            Assert.Fail();
+            is_pair(cons(1, cons(2, nil))).must_equal(true);
         }
         [Test]
-        public void It_()
+        public void It_is_false_for_an_empty_list()
         {
-
-    //it "is false for an empty list" do
-    //  pair?(nil).must_equal false
-    //end
-            Assert.Fail();
+            is_pair(nil).must_equal(false);
         }
     }
 }

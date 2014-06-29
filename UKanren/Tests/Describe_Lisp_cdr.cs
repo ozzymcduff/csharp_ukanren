@@ -6,12 +6,9 @@ namespace Tests
     public class Describe_Lisp_cdr : TestHelper
     {
         [Test]
-        public void It_()
+        public void It_returns_the_second_item_in_the_pair()
         {
-            //it "returns the second item in the pair" do
-            //  cdr(cons(1, 2)).must_equal 2
-            //end
-            Assert.Fail();
+            cdr(cons(1, 2)).must_equal(2);
         }
     }
 }

@@ -1,16 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MicroKanren
 {
-    public class Ruby
+
+    public class Lisp
     {
         public Symbol sym(string name)
         {
             return new Symbol(name);
         }
 
-        public object nil { get { return Cons.Nil; } }
+        public Cons nil { get { return Cons.Nil; } }
         public bool truthy(object s)
         {
             if (nil.Equals(s))
@@ -35,10 +37,45 @@ namespace MicroKanren
             }
             return false;
         }
-    }
 
-    public class Lisp:Ruby
-    {
+        public int length(Cons list)
+        {
+            return list.IsNil() ? 0 : 1 + length((Cons)cdr(list));
+        }
+        public Cons list(params object[] values)
+        {
+            return list_array(values);
+        }
+        public Cons list_array(object[] values)
+        {
+            if (values.empty())
+            {
+                return nil;
+            }
+            return cons(values.First(), list_array(values.Skip(1).ToArray()));
+        }
+
+        public Cons map(Func<object, object> func, object list)
+        {
+            if (truthy(list))
+                return cons(func(car(list)), map(func, cdr(list)));
+            return nil;
+        }
+
+        public bool is_procedure(object elt)
+        {
+            return elt is Delegate; 
+        }
+
+        public object call(object elt)
+        {
+            if (elt is Delegate)
+            {
+                return ((Delegate)elt).DynamicInvoke();
+            }
+            throw new Exception("Not a func!");
+        }
+
         public Cons cons<T1, T2>(T1 car, T2 cdr)
         {
             return new Cons<T1, T2>(car, cdr);
@@ -49,8 +86,7 @@ namespace MicroKanren
         public object pull(object stream)
         {
             //  stream.is_a?(Proc) && !cons?(stream) ? pull(stream.call) : stream
-            Console.Write("" + stream.GetType()+"\n");
-            return stream is Func<Object> && !is_cons(stream) ? pull(((Func<Object>)stream).call()) : stream;
+            return is_procedure(stream) && !is_cons(stream) ? pull(call(stream)) : stream;
         }
         public object take(int n, object stream)
         {
@@ -88,10 +124,7 @@ namespace MicroKanren
             {
                 return ((Cons)cons).Car;
             }
-            throw new Exception("Not cons ["+cons.GetType()+"]->"+cons);
-            //public override Cons Car { get { return CarT as Cons ?? New(CarT, null); } }
-            //public override Cons Cdr { get { return CdrT as Cons ?? New(CdrT, null); } }
-
+            throw new Exception("Not cons [" + cons.GetType() + "]->" + cons);
         }
         public object cdr(object cons)
         {

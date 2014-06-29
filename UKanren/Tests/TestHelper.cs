@@ -155,42 +155,37 @@ namespace Tests
             return appendo2()(cons(sym("a"), nil), cons(sym("b"), nil), cons(sym("a"), cons(sym("b"), nil)));
         }
 
-        /*module MicroKanren
-module TestPrograms
-def a_and_b
-  a = -> (a) { eq(a, 7) }
-  b = -> (b) { disj(eq(b, 5), eq(b, 6)) }
+        public Func<object, Func<object,object>> relo()
+        {
+            return (x) =>
+            {
+                return call_fresh((x1) =>
+                {
+                    return call_fresh((x2) =>
+                    {
+                        return conj(
+                            eq(x, cons(x1, x2)),
+                            disj(
+                                eq(x1, x2),
+                                (s_c) =>
+                                {
+                                    var func = new Func<object>(() => { return relo()(x)(s_c); });
+                                    return func;
+                                }));
+                    });
+                });
+            };
+        }
 
-  conj(call_fresh(a), call_fresh(b))
-end
-
-def relo
-  -> (x) {
-    call_fresh(-> (x1) {
-      call_fresh(-> (x2) {
-        conj(
-          eq(x, cons(x1, x2)),
-          disj(
-            eq(x1, x2),
-            -> (s_c) {
-              -> { relo.call(x).call(s_c) }
-            }
-          )
-        )
-      })
-    })
-  }
-end
-
-def many_non_ans
-  call_fresh(-> (x) {
-    disj(
-      relo.call(cons(5, 6)),
-      eq(x, 3))})
-end
-end
-end
-*/
+        public Func<object, object> many_non_ans()
+        {
+            return call_fresh((x) =>
+            {
+                return disj(
+                    relo()(cons(5, 6)),
+                    eq(x, 3));
+            });
+        }
 
         #endregion
 

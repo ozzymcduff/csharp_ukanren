@@ -6,20 +6,14 @@ namespace Tests
     public class Describe_Lisp_length : TestHelper
     {
         [Test]
-        public void It_1()
+        public void It_returns_0_for_an_empty_list()
         {
-            //it "returns 0 for an empty list" do
-            //  length(nil).must_equal 0
-            //end
-            Assert.Fail();
+            length(nil).must_equal(0);
         }
         [Test]
-        public void It_2()
+        public void It_returns_the_list_length_for_a_non_empty_list()
         {
-            //it "returns the list length for a non-empty list" do
-            //  length(cons(1, cons(2, nil))).must_equal 2
-            //end
-            Assert.Fail();
+            length(cons(1, cons(2, nil))).must_equal(2);
         }
 
     }

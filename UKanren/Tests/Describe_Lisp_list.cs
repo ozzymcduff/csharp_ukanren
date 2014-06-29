@@ -6,12 +6,9 @@ namespace Tests
     public class Describe_Lisp_list : TestHelper
     {
         [Test]
-        public void It_()
+        public void It_should_return_a_proper_list_containing_the_given_values()
         {
-            //it "should return a proper list containing the given values" do
-            //  list(:a, :b, :c).must_equal cons(:a, cons(:b, cons(:c, nil)))
-            //end
-            Assert.Fail();
+            list(sym("a"), sym("b"), sym("c")).must_equal(cons(sym("a"), cons(sym("b"), cons(sym("c"), nil))));
         }
     }
 }

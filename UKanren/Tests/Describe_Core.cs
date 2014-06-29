@@ -78,7 +78,7 @@ namespace Tests
         public void It_ground_appendo()
         {
             //    res = car(ground_appendo.call(empty_state).call)
-            var res = car(((Func<Object>) ground_appendo()(empty_state))());
+            var res = car(((Func<Object>)ground_appendo()(empty_state))());
 
             //# Expected result in scheme:
             //# (((#(2) b) (#(1)) (#(0) . a)) . 3)
@@ -92,7 +92,7 @@ namespace Tests
         [Test]
         public void It_ground_appendo2()
         {
-            var res = car(((Func<Object>) ground_appendo2()(empty_state))()).ToString();
+            var res = car(((Func<Object>)ground_appendo2()(empty_state))()).ToString();
             res.must_equal("((([2] b) ([1]) ([0] . a)) . 3)");
         }
 
@@ -115,39 +115,24 @@ namespace Tests
         [Test]
         public void It_reify_1st_across_appendo()
         {
-
-            /*          it "reify-1st across appendo" do
-                    res = map(method(:reify_1st).to_proc, take(2, call_appendo.call(empty_state)))
-
-                    # Expected result in scheme:
-                    # ((() _.0 _.0) ((_.0) _.1 (_.0 . _.1)))
-
-                    res.to_s.must_equal '((nil _.0 _.0) ((_.0) _.1 (_.0 . _.1)))'
-                  end
-        */
-            Assert.Fail();
+            //# Expected result in scheme:
+            //# ((() _.0 _.0) ((_.0) _.1 (_.0 . _.1)))
+            var res = map(reify_1st, take(2, call_appendo()(empty_state)));
+            res.ToString().must_equal("((nil _.0 _.0) ((_.0) _.1 (_.0 . _.1)))");
         }
 
         [Test]
         public void It_reify_1st_across_appendo2()
         {
-            /* it "reify-1st across appendo2" do
-            res = map(method(:reify_1st).to_proc, take(2, call_appendo2.call(empty_state)))
-            res.to_s.must_equal '((nil _.0 _.0) ((_.0) _.1 (_.0 . _.1)))'
-          end
-*/
-            Assert.Fail();
+            var res = map(reify_1st, take(2, call_appendo2()(empty_state)));
+            res.ToString().must_equal("((nil _.0 _.0) ((_.0) _.1 (_.0 . _.1)))");
         }
 
         [Test]
         public void It_many_non_ans()
         {
-            /*it "many non-ans" do
-                res = take(1, many_non_ans.call(empty_state))
-                res.to_s.must_equal '(((([0] . 3)) . 1))'
-              end
-            */
-            Assert.Fail();
+            var res = take(1, many_non_ans()(empty_state));
+            res.ToString().must_equal("(((([0] . 3)) . 1))");
         }
 
     }

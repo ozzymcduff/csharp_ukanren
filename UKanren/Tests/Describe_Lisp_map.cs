@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 
 namespace Tests
 {
@@ -6,13 +7,10 @@ namespace Tests
     public class Describe_Lisp_map : TestHelper
     {
         [Test]
-        public void It_()
+        public void It_maps_a_function_over_a_list()
         {
-            //it "maps a function over a list" do
-            //  func = -> (str) { str.upcase }
-            //  map(func, cons("foo", cons("bar", nil))).to_s.must_equal '("FOO" "BAR")'
-            //end
-            Assert.Fail();
+            Func<Object,Object> func = (str) => { return str.ToString().ToUpper(); };
+            map(func, cons("foo", cons("bar", nil))).ToString().must_equal(@"(""FOO"" ""BAR"")");
         }
     }
 }

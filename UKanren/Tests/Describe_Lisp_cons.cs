@@ -6,13 +6,10 @@ namespace Tests
     public class Describe_Lisp_cons : TestHelper
     {
         [Test]
-        public void It_()
+        public void It_returns_a_pair()
         {
-            //it "returns a pair" do
-            //  car(cons(1, 2)).must_equal 1
-            //  cdr(cons(1, 2)).must_equal 2
-            //end
-            Assert.Fail();
+            car(cons(1, 2)).must_equal(1);
+            cdr(cons(1, 2)).must_equal(2);
         }
     }
 }
