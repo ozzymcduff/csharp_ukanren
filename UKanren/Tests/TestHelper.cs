@@ -1,9 +1,8 @@
 ﻿using System;
-using MicroKanren;
 
 namespace Tests
 {
-    public partial class TestHelper : MicroKanren.Core
+    public class TestHelper : MicroKanren.Core
     {
         #region TestPrograms
 
@@ -25,123 +24,64 @@ namespace Tests
 
         public Func<object, Func<object, object>> fives()
         {
-            /*      -> (x) {
-        disj(eq(x, 5), -> (a_c) { -> { fives(x).call(a_c) } })
-      }
-*/
-            return (x) =>
-            {
-                return Disj(Eq(x, 5), (a_c) =>
-                {
-                    //-> { fives(x).call(a_c) }
-                    Func<object> func = () => fives()(x)(a_c);
-                    return func;
-                    //fives()(x).call(a_c)
-                });
-            };
+            return (x) => Disj(Eq(x, 5), 
+                (a_c) => new Func<object> ( () => fives()(x)(a_c)));
         }
 
         public Func<object, object, object, Func<object, object>> appendo()
         {
-            return (l, s, out_) =>
-            {
-                //-> (l, s, out) {
-                return Disj(Conj(Eq(Nil, l), Eq(s, out_)),
-                    CallFresh((a) =>
-                    {
-                        //call_fresh(-> (a) {
-                        return CallFresh((d) =>
-                        {
-                            //call_fresh(-> (d) {
-                            return Conj(
+            return (l, s, out_) => 
+                Disj(
+                    Conj(Eq(Nil, l), Eq(s, out_)),
+                    CallFresh((a) => 
+                        CallFresh((d) => 
+                            Conj(
                                 Eq(Cons(a, d), l),
-                                CallFresh((res) =>
-                                {
-                                    //          call_fresh(-> (res) {
-                                    return Conj(
+                                CallFresh((res) => 
+                                    Conj(
                                         Eq(Cons(a, res), out_),
-                                        (s_c) =>
-                                        {
-                                            //-> (s_c) {
-                                            Func<Object> func = () =>
-                                            {
-                                                return appendo()(d, s, res)(s_c);
-                                            }; //      -> {appendo.call(d, s, res).call(s_c)
-                                            return func;
-                                        });
-                                })); /*      
-                                  -> {appendo.call(d, s, res).call(s_c)}})}))})}))}*/
-                        });
-                    }));
-            };
+                                        (s_c) => 
+                                            new Func<Object> (() => 
+                                                appendo()(d, s, res)(s_c))))))));
         }
 
         public Func<object, object, object, Func<object, object>> appendo2()
         {
-            return (l, s, out_) =>
-            {
-                //-> (l, s, out) {
-                return Disj(
+            return (l, s, out_) => 
+                Disj(
                     Conj(Eq(Nil, l), Eq(s, out_)),
-                    CallFresh((a) =>
-                    {
-                        return CallFresh((d) =>
-                        {
-                            return Conj(
+                    CallFresh((a) => 
+                        CallFresh((d) => 
+                            Conj(
                                 Eq(Cons(a, d), l),
-                                CallFresh((res) =>
-                                {
-                                    return Conj(
-                                        (s_c) =>
-                                        {
-                                            Func<Object> func = () =>
-                                            {
-                                                return appendo2()(d, s, res)(s_c);
-                                            };
-                                            return func;
-                                        }, Eq(Cons(a, res), out_));
-                                }));
-                        });
-                    }));
-            };
+                                CallFresh((res) => 
+                                    Conj(
+                                        (s_c) => 
+                                            new Func<object>( () => 
+                                                appendo2()(d, s, res)(s_c)), 
+                                        Eq(Cons(a, res), out_)))))));
         }
 
         public Func<object, object> call_appendo()
         {
-            return CallFresh((q) =>
-            {
-                return CallFresh((l) =>
-                {
-                    return CallFresh((s) =>
-                    {
-                        return CallFresh((out_) =>
-                        {
-                            return Conj(
+            return CallFresh((q) => 
+                CallFresh((l) => 
+                    CallFresh((s) => 
+                        CallFresh((out_) => 
+                            Conj(
                                 appendo()(l, s, out_),
-                                Eq(Cons(l, Cons(s, Cons(out_, Nil))), q));
-                        });
-                    });
-                });
-            });
+                                Eq(Cons(l, Cons(s, Cons(out_, Nil))), q))))));
         }
 
         public Func<object, object> call_appendo2()
         {
-            return CallFresh((q) =>
-            {
-                return CallFresh((l) =>
-                {
-                    return CallFresh((s) =>
-                    {
-                        return CallFresh((out_) =>
-                        {
-                            return Conj(
-                                appendo2()(l, s, out_),
-                                Eq(Cons(l, Cons(s, Cons(out_, Nil))), q));
-                        });
-                    });
-                });
-            });
+            return CallFresh((q) => 
+                        CallFresh((l) => 
+                            CallFresh((s) => 
+                                CallFresh((out_) => 
+                                    Conj(
+                                        appendo2()(l, s, out_),
+                                        Eq(Cons(l, Cons(s, Cons(out_, Nil))), q))))));
         }
 
         public Func<object, object> ground_appendo()
@@ -157,34 +97,22 @@ namespace Tests
 
         public Func<object, Func<object,object>> relo()
         {
-            return (x) =>
-            {
-                return CallFresh((x1) =>
-                {
-                    return CallFresh((x2) =>
-                    {
-                        return Conj(
+            return (x) => 
+                CallFresh((x1) => 
+                    CallFresh((x2) => 
+                        Conj(
                             Eq(x, Cons(x1, x2)),
                             Disj(
                                 Eq(x1, x2),
-                                (s_c) =>
-                                {
-                                    var func = new Func<object>(() => { return relo()(x)(s_c); });
-                                    return func;
-                                }));
-                    });
-                });
-            };
+                                (s_c) => new Func<object>(() => relo()(x)(s_c))))));
         }
 
         public Func<object, object> many_non_ans()
         {
-            return CallFresh((x) =>
-            {
-                return Disj(
+            return CallFresh((x) => 
+                Disj(
                     relo()(Cons(5, 6)),
-                    Eq(x, 3));
-            });
+                    Eq(x, 3)));
         }
 
         #endregion
