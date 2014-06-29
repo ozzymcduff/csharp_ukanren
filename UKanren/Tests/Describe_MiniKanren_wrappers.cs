@@ -1,5 +1,4 @@
 ﻿using System;
-using NUnit.Core;
 using NUnit.Framework;
 
 namespace Tests
