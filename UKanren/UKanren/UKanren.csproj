@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EmptyPair.cs" />
     <Compile Include="Pair.cs" />
     <Compile Include="Core.cs" />
     <Compile Include="Lisp.cs" />
