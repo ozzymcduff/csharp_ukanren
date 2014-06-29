@@ -16,9 +16,9 @@ namespace Tests
 
       conj(call_fresh(a), call_fresh(b))
 */
-                Func<object, Func<object, object>> a = (_a) => Eq(_a, 7);
-                Func<object, Func<object, object>> b = (_b) => Disj(Eq(_b, 5), Eq(_b, 6));
-                return Conj(CallFresh(a), CallFresh(b));
+                return Conj(
+                    CallFresh((_a) => Eq(_a, 7)), 
+                    CallFresh((_b) => Disj(Eq(_b, 5), Eq(_b, 6))));
             }
         }
 
