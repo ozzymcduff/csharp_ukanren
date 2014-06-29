@@ -1,41 +1,36 @@
-# microKanren in Ruby
+# microKanren in C#
 
 [microKanren](http://webyrd.net/scheme-2013/papers/HemannMuKanren2013.pdf) is a
 minimalist relational (logic) programming language. This project is a port of
-microKanren to Ruby. It is an almost exact translation of
+microKanren to C#. It is an almost exact translation of
 [the original implementation](https://github.com/jasonhemann/microKanren),
 which was written for [Petite Chez Scheme](http://www.scheme.com/petitechezscheme.html).
 
 ## Installation
 
-Add this line to your application's Gemfile:
+To install MicroKanren, run the following command in the [Package Manager Console](http://docs.nuget.org/docs/start-here/using-the-package-manager-console)
 
-    gem 'micro_kanren'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install micro_kanren
+    PM> Install-Package MicroKanren
 
 ## Usage
 
-The following example demonstrates how MicroKanren can be used from the console:
+The following example demonstrates how MicroKanren can be used from a simple program:
 
-```ruby
-> require 'micro_kanren'
-> include MicroKanren::Core
-> include MicroKanren::MiniKanrenWrappers
+```csharp
+using 'MicroKanren'
+class SimpleProgram::Core{
+    public string Do(){
+        var res = CallFresh((q)=> Eq(q, 5) )(EmptyState);
+        return res.ToString();
+    }
+}
 
-> res = call_fresh(-> (q) { eq(q, 5) }).call(empty_state)
-> res.to_s
+> new SimpleProgram().Do()
 (((([0] . 5)) . 1))
 ```
 
 See the
-[spec file](https://github.com/jsl/ruby_ukanren/blob/master/spec/micro_kanren/core_spec.rb)
+[spec file](https://github.com/wallymathieu/csharp_ukanren/blob/master/UKanren/Tests/Describe_Core.cs)
 for more examples. The spec file is almost an exact port of the [microKanren tests
 written in Scheme](https://github.com/jasonhemann/microKanren/blob/master/microKanren-test.scm).
 
@@ -71,8 +66,8 @@ See LICENSE.txt.
 
 ## Author
 
-See credits for source of original code. This port was written by [Justin Leitgeb]
-(http://justinleitgeb.com).
+See credits for source of original code. This is a port of a port written by [Justin Leitgeb]
+(http://justinleitgeb.com). This port is written by Oskar Gewalli.
 
 ## Build Status
 
