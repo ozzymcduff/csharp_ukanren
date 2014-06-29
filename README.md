@@ -1,4 +1,4 @@
-# microKanren in CSharp
+# microKanren in CSharp [![Build status](https://ci.appveyor.com/api/projects/status/882f2ayngccd7dd2)](https://ci.appveyor.com/project/wallymathieu/csharp-ukanren)
 
 [microKanren](http://webyrd.net/scheme-2013/papers/HemannMuKanren2013.pdf) is a
 minimalist relational (logic) programming language. This project is a port of
@@ -69,6 +69,3 @@ See LICENSE.txt.
 See credits for source of original code. This is a port of a port written by [Justin Leitgeb]
 (http://justinleitgeb.com). This port is written by Oskar Gewalli.
 
-## Build Status
-
-[![Build Status](https://travis-ci.org/jsl/ruby_ukanren.png)](https://travis-ci.org/jsl/ruby_ukanren)
