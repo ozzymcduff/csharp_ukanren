@@ -1,8 +1,8 @@
-# microKanren in C#
+# microKanren in CSharp
 
 [microKanren](http://webyrd.net/scheme-2013/papers/HemannMuKanren2013.pdf) is a
 minimalist relational (logic) programming language. This project is a port of
-microKanren to C#. It is an almost exact translation of
+microKanren to CSharp. It is an almost exact translation of
 [the original implementation](https://github.com/jasonhemann/microKanren),
 which was written for [Petite Chez Scheme](http://www.scheme.com/petitechezscheme.html).
 
