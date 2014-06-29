@@ -142,12 +142,12 @@ namespace MicroKanren
             return (string.Format("_.{0}",n)).to_sym();
         }
 
-        public Object ReifyS(object v, object s)
+        public Cons ReifyS(object v, Cons s)
         {
             v = Walk(v, s);
             if (IsVar(v))
             {
-                var n = ReifyName(Length((Cons)s)); //n = reify_name(length(s))
+                var n = ReifyName(Length(s)); //n = reify_name(length(s))
                 return Cons(Cons(v, n), s); //cons(cons(v, n), s)
             }
             else if (IsPair(v))
