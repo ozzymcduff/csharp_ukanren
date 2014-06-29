@@ -7,15 +7,15 @@ namespace MicroKanren
 
     public class Lisp
     {
-        public Symbol sym(string name)
+        public Symbol Sym(string name)
         {
             return new Symbol(name);
         }
 
-        public Cons nil { get { return Cons.Nil; } }
-        public bool truthy(object s)
+        public Cons Nil { get { return MicroKanren.Cons.Nil; } }
+        public bool Truthy(object s)
         {
-            if (nil.Equals(s))
+            if (Nil.Equals(s))
             {
                 return false;
             }
@@ -38,36 +38,36 @@ namespace MicroKanren
             return false;
         }
 
-        public int length(Cons list)
+        public int Length(Cons list)
         {
-            return list.IsNil() ? 0 : 1 + length((Cons)cdr(list));
+            return list.IsNil() ? 0 : 1 + Length((Cons)Cdr(list));
         }
-        public Cons list(params object[] values)
+        public Cons List(params object[] values)
         {
-            return list_array(values);
+            return ListArray(values);
         }
-        public Cons list_array(object[] values)
+        public Cons ListArray(object[] values)
         {
             if (values.empty())
             {
-                return nil;
+                return Nil;
             }
-            return cons(values.First(), list_array(values.Skip(1).ToArray()));
+            return Cons(values.First(), ListArray(values.Skip(1).ToArray()));
         }
 
-        public Cons map(Func<object, object> func, object list)
+        public Cons Map(Func<object, object> func, object list)
         {
-            if (truthy(list))
-                return cons(func(car(list)), map(func, cdr(list)));
-            return nil;
+            if (Truthy(list))
+                return Cons(func(Car(list)), Map(func, Cdr(list)));
+            return Nil;
         }
 
-        public bool is_procedure(object elt)
+        public bool IsProcedure(object elt)
         {
-            return elt is Delegate; 
+            return elt is Delegate;
         }
 
-        public object call(object elt)
+        public object Call(object elt)
         {
             if (elt is Delegate)
             {
@@ -76,49 +76,44 @@ namespace MicroKanren
             throw new Exception("Not a func!");
         }
 
-        public Cons cons<T1, T2>(T1 car, T2 cdr)
+        public Cons Cons<T1, T2>(T1 car, T2 cdr)
         {
             return new Cons<T1, T2>(car, cdr);
         }
 
-        //        # Advances a stream until it matures. Per microKanren document 5.2, "From
-        //# Streams to Lists."
-        public object pull(object stream)
+        /// <summary>
+        /// Advances a stream until it matures. Per microKanren document 5.2, "From
+        /// Streams to Lists."
+        /// </summary>
+        public object Pull(object stream)
         {
             //  stream.is_a?(Proc) && !cons?(stream) ? pull(stream.call) : stream
-            return is_procedure(stream) && !is_cons(stream) ? pull(call(stream)) : stream;
+            return IsProcedure(stream) && !IsCons(stream) ? Pull(Call(stream)) : stream;
         }
-        public object take(int n, object stream)
+
+        public object Take(int n, object stream)
         {
             object cur;
             if (n > 0)
-                if (!nil.Equals(cur = pull(stream)))
-                    return cons(car(cur), take(n - 1, cdr(cur)));
+                if (!Nil.Equals(cur = Pull(stream)))
+                    return Cons(Car(cur), Take(n - 1, Cdr(cur)));
 
-            return nil;
+            return Nil;
         }
 
-        public Func<Object, Object> car(Func<Object, Object> func)
-        {
-            return (o) =>
-            {
-                return car(o);
-            };
-        }
-
-        public bool is_cons(object d)
+        public bool IsCons(object d)
         {
             return d is Cons && !(d is EmptyCons);
         }
 
-        public bool is_pair(object d)
+        public bool IsPair(object d)
         {
-            return is_cons(d);
+            return IsCons(d);
         }
 
-        public Cons empty_state { get { return cons(mzero, 0); } }
+        public Cons EmptyState { get { return Cons(Mzero, 0); } }
 
-        public object car(object cons)
+        public object Car(object cons)
         {
             if (cons is Cons)
             {
@@ -126,7 +121,7 @@ namespace MicroKanren
             }
             throw new Exception("Not cons [" + cons.GetType() + "]->" + cons);
         }
-        public object cdr(object cons)
+        public object Cdr(object cons)
         {
             if (cons is Cons)
             {
@@ -135,30 +130,21 @@ namespace MicroKanren
             throw new Exception("Not cons [" + cons.GetType() + "]->" + cons);
         }
 
-        public Cons mzero { get { return Cons.Nil; } }
+        public Cons Mzero { get { return MicroKanren.Cons.Nil; } }
 
-        public object assp(Func<Object, bool> func, object alist)
+        public object Assp(Func<Object, bool> func, object alist)
         {
-            if (truthy(alist))
+            if (Truthy(alist))
             {
-                //Console.WriteLine(alist);
-                var first_pair = car(alist);
-                var first_value = car(first_pair);
+                var first_pair = Car(alist);
+                var first_value = Car(first_pair);
 
-                if (func(first_value))
+                if (func(first_value))// if func.call(first_value)
                 {
                     return first_pair;
                 }
                 else
-                    return assp(func, cdr(alist));
-                /*
-
-           if func.call(first_value)
-             first_pair
-           else
-             assp(func, cdr(alist))
-           end
-   */
+                    return Assp(func, Cdr(alist));// assp(func, cdr(alist))
             }
             else
             {

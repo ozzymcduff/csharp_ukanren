@@ -8,8 +8,8 @@ namespace Tests
         [Test]
         public void It_returns_a_pair()
         {
-            car(cons(1, 2)).must_equal(1);
-            cdr(cons(1, 2)).must_equal(2);
+            Car(Cons(1, 2)).must_equal(1);
+            Cdr(Cons(1, 2)).must_equal(2);
         }
     }
 }

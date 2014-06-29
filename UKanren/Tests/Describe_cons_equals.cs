@@ -8,12 +8,12 @@ namespace Tests
         [Test]
         public void It_is_true_if_the_lists_are_equal()
         {
-            cons(1, cons(2, nil)).must_equal(cons(1, cons(2, nil)));
+            Cons(1, Cons(2, Nil)).must_equal(Cons(1, Cons(2, Nil)));
         }
         [Test]
         public void It_is_false_if_the_lists_contain_different_objects()
         {
-            cons(1, cons(2, nil)).wont_equal(cons(1, nil));
+            Cons(1, Cons(2, Nil)).wont_equal(Cons(1, Nil));
         }
     }
 }

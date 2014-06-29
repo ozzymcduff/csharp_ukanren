@@ -5,19 +5,19 @@ namespace MicroKanren
 {
     public class Core : Lisp
     {
-        public Cons unit(Cons s_c)
+        public Cons Unit(Cons s_c)
         {
-            return cons(s_c, mzero);
+            return Cons(s_c, Mzero);
         }
-        public Var var(object c)
+        public Var Var(object c)
         {
             return new Var(new[] { c });
         }
-        public bool is_var(object x)
+        public bool IsVar(object x)
         {
             return x is Var;
         }
-        public bool vars_eq(Var x1, Var x2)
+        public bool VarsEq(Var x1, Var x2)
         {
             return x1.Equals(x2);
         }
@@ -25,95 +25,91 @@ namespace MicroKanren
         /// <summary>
         /// Walk environment S and look up value of U, if present.
         /// </summary>
-        public object walk(object u, object s)
+        public object Walk(object u, object s)
         {
-            if (is_var(u))
+            if (IsVar(u))
             {
-                var pr = assp((v) => u.Equals(v), s);
-                return truthy(pr) ? walk(cdr(pr), s) : u;
+                var pr = Assp((v) => u.Equals(v), s);
+                return Truthy(pr) ? Walk(Cdr(pr), s) : u;
 
             }
             else
                 return u;
         }
 
-        public Cons ext_s(object x, object v, object s)
+        public Cons ExtS(object x, object v, object s)
         {
-            return cons(cons(x, v), s);
+            return Cons(Cons(x, v), s);
         }
 
-        public object unify(object u, object v, object s)
+        public object Unify(object u, object v, object s)
         {
-            u = walk(u, s);
-            v = walk(v, s);
-            if (is_var(u) && is_var(v) && vars_eq((Var)u, (Var)v))
+            u = Walk(u, s);
+            v = Walk(v, s);
+            if (IsVar(u) && IsVar(v) && VarsEq((Var)u, (Var)v))
             {
                 return s;
             }
-            else if (is_var(u))
+            else if (IsVar(u))
             {
-                return ext_s(u, v, s);
+                return ExtS(u, v, s);
             }
-            else if (is_var(v))
+            else if (IsVar(v))
             {
-                return ext_s(v, u, s);
+                return ExtS(v, u, s);
             }
-            else if (is_pair(u) && is_pair(v))
+            else if (IsPair(u) && IsPair(v))
             {
-                var s2 = unify(car(u), car(v), s);
-                if (truthy(s2))
-                    return unify(cdr(u), cdr(v), s2);
-                return nil;
+                var s2 = Unify(Car(u), Car(v), s);
+                if (Truthy(s2))
+                    return Unify(Cdr(u), Cdr(v), s2);
+                return Nil;
             }
             else
             {
                 //# Object identity (equal?) seems closest to eqv? in Scheme.
                 if (Equals(u, v))
                     return s;
-                return nil;
+                return Nil;
             }
         }
 
-        public Func<object, object> disj(Func<object, object> g1, Func<object, object> g2)
+        public Func<object, object> Disj(Func<object, object> g1, Func<object, object> g2)
         {
-            return (s_c) => { return mplus(g1.call(s_c), g2.call(s_c)); };
+            return (s_c) => Mplus(g1.Call(s_c), g2.Call(s_c));
         }
-        public Func<object, object> conj(Func<object, object> g1, Func<object, object> g2)
+        public Func<object, object> Conj(Func<object, object> g1, Func<object, object> g2)
         {
-            return (s_c) => { return bind(g1.call(s_c), g2); };
+            return (s_c) => bind(g1.Call(s_c), g2);
         }
 
         public object bind(object d, Func<object, object> g)
         {
-            if (nil.Equals(d))
+            if (Nil.Equals(d))
             {
-                return mzero;
+                return Mzero;
             }
-            else if (is_procedure(d))
+            else if (IsProcedure(d))
             {
-                return new Func<object>(() => bind(call(d), g));
+                return new Func<object>(() => bind(Call(d), g));
             }
             else
             {
-                return mplus(g.call(car(d)), bind(cdr(d), g));
+                return Mplus(g.Call(Car(d)), bind(Cdr(d), g));
             }
         }
-        private object mplus(object d1, object d2)
+        private object Mplus(object d1, object d2)
         {
-            if (nil.Equals(d1))
+            if (Nil.Equals(d1))
             {
                 return d2;
             }
-            else if (is_procedure(d1))
+            else if (IsProcedure(d1))
             {
-                Func<object> a = () =>
-                {
-                    return mplus(d2, call(d1));
-                };
-                return a;
+                return new Func<object>(() => Mplus(d2, Call(d1)));
             }
             else
-                return cons(car(d1), mplus(cdr(d1), d2));
+                return Cons(Car(d1), Mplus(Cdr(d1), d2));
         }
 
 
@@ -121,43 +117,42 @@ namespace MicroKanren
         /// Constrain u to be equal to v
         /// == in Scheme implementation, ≡ in uKanren papers.
         /// </summary>
-        public Func<object, object> eq(Object u, Object v)
+        public Func<object, object> Eq(Object u, Object v)
         {
             return (s_c) =>
             {
-                var s = unify(u, v, car(s_c));
-                return truthy(s) ? unit(cons(s, cdr(s_c))) : mzero;
+                var s = Unify(u, v, Car(s_c));
+                return Truthy(s) ? Unit(Cons(s, Cdr(s_c))) : Mzero;
             };
         }
         /// <summary>
         /// Call function f with a fresh variable.
         /// </summary>
-        public Func<object, object> call_fresh(Func<object, Func<object, object>> f)
+        public Func<object, object> CallFresh(Func<object, Func<object, object>> f)
         {
             return (s_c) =>
             {
-                var c = (Int32)cdr(s_c);
-                var x = (c + 1);
-                return f.call(var(c)).call(cons(car(s_c), x));
+                var c = (Int32)Cdr(s_c);
+                return f.Call(Var(c)).Call(Cons(Car(s_c), c + 1));
             };
         }
 
-        public Symbol reify_name(object n)
+        public Symbol ReifyName(object n)
         {
             return (string.Format("_.{0}",n)).to_sym();
         }
 
-        public Object reify_s(object v, object s)
+        public Object ReifyS(object v, object s)
         {
-            v = walk(v, s);
-            if (is_var(v))
+            v = Walk(v, s);
+            if (IsVar(v))
             {
-                var n = reify_name(length((Cons)s)); //n = reify_name(length(s))
-                return cons(cons(v, n), s); //cons(cons(v, n), s)
+                var n = ReifyName(Length((Cons)s)); //n = reify_name(length(s))
+                return Cons(Cons(v, n), s); //cons(cons(v, n), s)
             }
-            else if (is_pair(v))
+            else if (IsPair(v))
             {
-                return reify_s(cdr(v), reify_s(car(v), s));//reify_s(cdr(v), reify_s(car(v), s))
+                return ReifyS(Cdr(v), ReifyS(Car(v), s));//reify_s(cdr(v), reify_s(car(v), s))
             }
             else
             {
@@ -169,22 +164,22 @@ namespace MicroKanren
 
         public Object reify_1st(object s_c)
         {
-            var v = walk_star(var(0), car(s_c)); //v = walk_star((var 0), car(s_c))
-            return walk_star(v, reify_s(v, nil)); //walk_star(v, reify_s(v, nil))
+            var v = walk_star(Var(0), Car(s_c)); //v = walk_star((var 0), car(s_c))
+            return walk_star(v, ReifyS(v, Nil)); //walk_star(v, reify_s(v, nil))
         }
 
         public Object walk_star(object v, object s)
         {
-            v = walk(v, s);
-            if (is_var(v))
+            v = Walk(v, s);
+            if (IsVar(v))
             {
                 return v;
             }
             //else
-            if (is_pair(v))
+            if (IsPair(v))
             {
-                return cons(walk_star(car(v), s),
-                    walk_star(cdr(v), s));
+                return Cons(walk_star(Car(v), s),
+                    walk_star(Cdr(v), s));
             }
             //else
             return v;

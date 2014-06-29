@@ -8,7 +8,7 @@ namespace Tests
         [Test]
         public void It_returns_the_second_item_in_the_pair()
         {
-            cdr(cons(1, 2)).must_equal(2);
+            Cdr(Cons(1, 2)).must_equal(2);
         }
     }
 }

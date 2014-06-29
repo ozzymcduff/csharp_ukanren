@@ -22,7 +22,7 @@ namespace Tests
         [Test]
         public void It_can_handle_null_if_using_cons_factory()
         {
-            Cons.New(1, null).Cdr.must_equal(nil);
+            MicroKanren.Cons.New(1, null).Cdr.must_equal(Nil);
         }
     }
 }

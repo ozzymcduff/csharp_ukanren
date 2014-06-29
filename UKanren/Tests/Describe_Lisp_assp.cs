@@ -8,25 +8,25 @@ namespace Tests
         [Test]
         public void It_returns_the_first_pair_for_which_the_predicate_function_is_true()
         {
-            var al1 = cons(3, cons(sym("a"), nil));
-            var al2 = cons(1, cons(sym("b"), nil));
-            var al3 = cons(4, cons(sym("c"), nil));
+            var al1 = Cons(3, Cons(Sym("a"), Nil));
+            var al2 = Cons(1, Cons(Sym("b"), Nil));
+            var al3 = Cons(4, Cons(Sym("c"), Nil));
 
-            var alist = cons(al1, cons(al2, cons(al3, nil)));
+            var alist = Cons(al1, Cons(al2, Cons(al3, Nil)));
 
-            var res = assp((i) => { return i.is_even(); }, alist);
-            res.must_equal (cons(4, cons(sym("c"), nil)));
+            var res = Assp((i) => { return i.is_even(); }, alist);
+            res.must_equal (Cons(4, Cons(Sym("c"), Nil)));
         }
         [Test]
         public void It_returns_false_if_there_is_no_matching_element_found()
         {
-            var pair1= cons(3, cons(sym("a"), nil));
-            var pair2= cons(1, cons(sym("b"), nil));
-            var pair3= cons(4, cons(sym("c"), nil));
+            var pair1= Cons(3, Cons(Sym("a"), Nil));
+            var pair2= Cons(1, Cons(Sym("b"), Nil));
+            var pair3= Cons(4, Cons(Sym("c"), Nil));
 
-            var alist = cons(pair1, cons(pair2, cons(pair3, nil)));
+            var alist = Cons(pair1, Cons(pair2, Cons(pair3, Nil)));
 
-            var res = assp((i) => { return i.Equals(5); }, alist);
+            var res = Assp((i) => { return i.Equals(5); }, alist);
             res.must_equal(false);
         }
     }

@@ -14,13 +14,13 @@ namespace Tests
                 Func<object> func = () => { return (object)42; };
                 return func;
             };
-            pull(stream).must_equal(42);
+            Pull(stream).must_equal(42);
         }
 
         [Test]
         public void It_returns_nil_in_the_case_of_the_empty_stream()
         {
-            pull(nil).must_be_nil();
+            Pull(Nil).must_be_nil();
         }
     }
 }

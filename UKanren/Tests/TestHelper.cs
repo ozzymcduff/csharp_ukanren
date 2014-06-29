@@ -17,9 +17,9 @@ namespace Tests
 
       conj(call_fresh(a), call_fresh(b))
 */
-                Func<object, Func<object, object>> a = (_a) => eq(_a, 7);
-                Func<object, Func<object, object>> b = (_b) => disj(eq(_b, 5), eq(_b, 6));
-                return conj(call_fresh(a), call_fresh(b));
+                Func<object, Func<object, object>> a = (_a) => Eq(_a, 7);
+                Func<object, Func<object, object>> b = (_b) => Disj(Eq(_b, 5), Eq(_b, 6));
+                return Conj(CallFresh(a), CallFresh(b));
             }
         }
 
@@ -31,7 +31,7 @@ namespace Tests
 */
             return (x) =>
             {
-                return disj(eq(x, 5), (a_c) =>
+                return Disj(Eq(x, 5), (a_c) =>
                 {
                     //-> { fives(x).call(a_c) }
                     Func<object> func = () => fives()(x)(a_c);
@@ -46,20 +46,20 @@ namespace Tests
             return (l, s, out_) =>
             {
                 //-> (l, s, out) {
-                return disj(conj(eq(nil, l), eq(s, out_)),
-                    call_fresh((a) =>
+                return Disj(Conj(Eq(Nil, l), Eq(s, out_)),
+                    CallFresh((a) =>
                     {
                         //call_fresh(-> (a) {
-                        return call_fresh((d) =>
+                        return CallFresh((d) =>
                         {
                             //call_fresh(-> (d) {
-                            return conj(
-                                eq(cons(a, d), l),
-                                call_fresh((res) =>
+                            return Conj(
+                                Eq(Cons(a, d), l),
+                                CallFresh((res) =>
                                 {
                                     //          call_fresh(-> (res) {
-                                    return conj(
-                                        eq(cons(a, res), out_),
+                                    return Conj(
+                                        Eq(Cons(a, res), out_),
                                         (s_c) =>
                                         {
                                             //-> (s_c) {
@@ -81,17 +81,17 @@ namespace Tests
             return (l, s, out_) =>
             {
                 //-> (l, s, out) {
-                return disj(
-                    conj(eq(nil, l), eq(s, out_)),
-                    call_fresh((a) =>
+                return Disj(
+                    Conj(Eq(Nil, l), Eq(s, out_)),
+                    CallFresh((a) =>
                     {
-                        return call_fresh((d) =>
+                        return CallFresh((d) =>
                         {
-                            return conj(
-                                eq(cons(a, d), l),
-                                call_fresh((res) =>
+                            return Conj(
+                                Eq(Cons(a, d), l),
+                                CallFresh((res) =>
                                 {
-                                    return conj(
+                                    return Conj(
                                         (s_c) =>
                                         {
                                             Func<Object> func = () =>
@@ -99,7 +99,7 @@ namespace Tests
                                                 return appendo2()(d, s, res)(s_c);
                                             };
                                             return func;
-                                        }, eq(cons(a, res), out_));
+                                        }, Eq(Cons(a, res), out_));
                                 }));
                         });
                     }));
@@ -108,17 +108,17 @@ namespace Tests
 
         public Func<object, object> call_appendo()
         {
-            return call_fresh((q) =>
+            return CallFresh((q) =>
             {
-                return call_fresh((l) =>
+                return CallFresh((l) =>
                 {
-                    return call_fresh((s) =>
+                    return CallFresh((s) =>
                     {
-                        return call_fresh((out_) =>
+                        return CallFresh((out_) =>
                         {
-                            return conj(
+                            return Conj(
                                 appendo()(l, s, out_),
-                                eq(cons(l, cons(s, cons(out_, nil))), q));
+                                Eq(Cons(l, Cons(s, Cons(out_, Nil))), q));
                         });
                     });
                 });
@@ -127,17 +127,17 @@ namespace Tests
 
         public Func<object, object> call_appendo2()
         {
-            return call_fresh((q) =>
+            return CallFresh((q) =>
             {
-                return call_fresh((l) =>
+                return CallFresh((l) =>
                 {
-                    return call_fresh((s) =>
+                    return CallFresh((s) =>
                     {
-                        return call_fresh((out_) =>
+                        return CallFresh((out_) =>
                         {
-                            return conj(
+                            return Conj(
                                 appendo2()(l, s, out_),
-                                eq(cons(l, cons(s, cons(out_, nil))), q));
+                                Eq(Cons(l, Cons(s, Cons(out_, Nil))), q));
                         });
                     });
                 });
@@ -147,26 +147,26 @@ namespace Tests
         public Func<object, object> ground_appendo()
         {
             // appendo.call(cons(:a, nil), cons(:b, nil), cons(:a, cons(:b, nil)))
-            return appendo()(cons(sym("a"), nil), cons(sym("b"), nil), cons(sym("a"), cons(sym("b"), nil)));
+            return appendo()(Cons(Sym("a"), Nil), Cons(Sym("b"), Nil), Cons(Sym("a"), Cons(Sym("b"), Nil)));
         }
 
         public Func<object, object> ground_appendo2()
         {//appendo2.call(cons(:a, nil), cons(:b, nil), cons(:a, cons(:b, nil)))
-            return appendo2()(cons(sym("a"), nil), cons(sym("b"), nil), cons(sym("a"), cons(sym("b"), nil)));
+            return appendo2()(Cons(Sym("a"), Nil), Cons(Sym("b"), Nil), Cons(Sym("a"), Cons(Sym("b"), Nil)));
         }
 
         public Func<object, Func<object,object>> relo()
         {
             return (x) =>
             {
-                return call_fresh((x1) =>
+                return CallFresh((x1) =>
                 {
-                    return call_fresh((x2) =>
+                    return CallFresh((x2) =>
                     {
-                        return conj(
-                            eq(x, cons(x1, x2)),
-                            disj(
-                                eq(x1, x2),
+                        return Conj(
+                            Eq(x, Cons(x1, x2)),
+                            Disj(
+                                Eq(x1, x2),
                                 (s_c) =>
                                 {
                                     var func = new Func<object>(() => { return relo()(x)(s_c); });
@@ -179,11 +179,11 @@ namespace Tests
 
         public Func<object, object> many_non_ans()
         {
-            return call_fresh((x) =>
+            return CallFresh((x) =>
             {
-                return disj(
-                    relo()(cons(5, 6)),
-                    eq(x, 3));
+                return Disj(
+                    relo()(Cons(5, 6)),
+                    Eq(x, 3));
             });
         }
 

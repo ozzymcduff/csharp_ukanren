@@ -8,7 +8,7 @@ namespace Tests
         [Test]
         public void It_returns_the_first_element_in_the_pair()
         {
-            car(cons(1, 2)).must_equal(1);
+            Car(Cons(1, 2)).must_equal(1);
         }
     }
 }

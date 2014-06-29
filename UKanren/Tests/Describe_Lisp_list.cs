@@ -8,7 +8,7 @@ namespace Tests
         [Test]
         public void It_should_return_a_proper_list_containing_the_given_values()
         {
-            list(sym("a"), sym("b"), sym("c")).must_equal(cons(sym("a"), cons(sym("b"), cons(sym("c"), nil))));
+            List(Sym("a"), Sym("b"), Sym("c")).must_equal(Cons(Sym("a"), Cons(Sym("b"), Cons(Sym("c"), Nil))));
         }
     }
 }

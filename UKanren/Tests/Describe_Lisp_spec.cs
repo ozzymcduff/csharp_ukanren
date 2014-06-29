@@ -16,22 +16,22 @@ namespace Tests
         [Test]
         public void It_is_false_for_an_integer()
         {
-            is_pair(1).must_equal(false);
+            IsPair(1).must_equal(false);
         }
         [Test]
         public void It_is_true_for_a_list_with_an_int_in_the_car_and_cdr()
         {
-            is_pair(cons(1, 2)).must_equal(true);
+            IsPair(Cons(1, 2)).must_equal(true);
         }
         [Test]
         public void It_is_true_for_a_proper_list()
         {
-            is_pair(cons(1, cons(2, nil))).must_equal(true);
+            IsPair(Cons(1, Cons(2, Nil))).must_equal(true);
         }
         [Test]
         public void It_is_false_for_an_empty_list()
         {
-            is_pair(nil).must_equal(false);
+            IsPair(Nil).must_equal(false);
         }
     }
 }

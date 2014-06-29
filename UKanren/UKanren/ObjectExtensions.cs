@@ -23,11 +23,11 @@ namespace MicroKanren
             return "[" + String.Join(", ", e.Cast<Object>()) + "]";
         }
 
-        public static T2 call<T1, T2>(this Func<T1, T2> f, T1 arg)
+        public static T2 Call<T1, T2>(this Func<T1, T2> f, T1 arg)
         {
             return f(arg);
         }
-        public static T1 call<T1>(this Func<T1> f)
+        public static T1 Call<T1>(this Func<T1> f)
         {
             return f();
         }
