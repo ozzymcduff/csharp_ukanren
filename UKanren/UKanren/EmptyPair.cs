@@ -4,7 +4,7 @@ namespace MicroKanren
     {
         public override string ToString(bool consInCdr)
         {
-            return "nil";
+            return "()";
         }
 
         public override string ToString()

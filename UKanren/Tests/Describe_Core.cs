@@ -118,14 +118,14 @@ namespace Tests
             //# Expected result in scheme:
             //# ((() _.0 _.0) ((_.0) _.1 (_.0 . _.1)))
             var res = Map(Reify1st, Take(2, call_appendo()(EmptyState)));
-            res.ToString().must_equal("((nil _.0 _.0) ((_.0) _.1 (_.0 . _.1)))");
+            res.ToString().must_equal("((() _.0 _.0) ((_.0) _.1 (_.0 . _.1)))");
         }
 
         [Test]
         public void It_reify_1st_across_appendo2()
         {
             var res = Map(Reify1st, Take(2, call_appendo2()(EmptyState)));
-            res.ToString().must_equal("((nil _.0 _.0) ((_.0) _.1 (_.0 . _.1)))");
+            res.ToString().must_equal("((() _.0 _.0) ((_.0) _.1 (_.0 . _.1)))");
         }
 
         [Test]

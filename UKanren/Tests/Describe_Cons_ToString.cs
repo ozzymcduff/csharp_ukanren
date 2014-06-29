@@ -16,7 +16,7 @@ namespace Tests
             e.ToString().must_equal("(1)");
             //# Is this an illogical list to be testing?
             var f = Cons(Nil, 1);
-            f.ToString().must_equal("(nil . 1)");
+            f.ToString().must_equal("(() . 1)");
         }
 
         [Test]
