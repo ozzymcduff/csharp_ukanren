@@ -31,10 +31,6 @@ namespace Tests
         {
             Assert.That(o,Is.EqualTo(Pair.Nil));
         }
-        public static bool is_even(this object i)
-        {
-            return ((int)i) % 2 == 0;
-        }
 
     }
 }

@@ -5,6 +5,11 @@ namespace Tests
     [TestFixture]
     public class Describe_Lisp_assp : TestHelper
     {
+        static bool is_even(object i)
+        {
+            return ((int)i) % 2 == 0;
+        }
+
         [Test]
         public void It_returns_the_first_pair_for_which_the_predicate_function_is_true()
         {
@@ -14,7 +19,7 @@ namespace Tests
 
             var alist = Cons(al1, Cons(al2, Cons(al3, Nil)));
 
-            var res = Assp((i) => { return i.is_even(); }, alist);
+            var res = Assp(is_even, alist);
             res.must_equal (Cons(4, Cons(Sym("c"), Nil)));
         }
         [Test]
@@ -26,7 +31,7 @@ namespace Tests
 
             var alist = Cons(pair1, Cons(pair2, Cons(pair3, Nil)));
 
-            var res = Assp((i) => { return i.Equals(5); }, alist);
+            var res = Assp((i) => i.Equals(5), alist);
             res.must_equal(false);
         }
     }

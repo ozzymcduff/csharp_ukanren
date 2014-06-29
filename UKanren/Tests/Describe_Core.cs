@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MicroKanren;
 using NUnit.Framework;
 
 namespace Tests
@@ -18,7 +13,7 @@ namespace Tests
         [Test]
         public void It_second_set_t1()
         {
-            var res = Car(CallFresh((q) => { return Eq(q, 5); })(EmptyState));
+            var res = Car(CallFresh((q) => Eq(q, 5))(EmptyState));
             res.ToString().must_equal("((([0] . 5)) . 1)");
         }
 
@@ -59,7 +54,7 @@ namespace Tests
         [Test]
         public void It_who_cares()
         {
-            var res = Take(1, CallFresh((q) => { return fives()(q); })(EmptyState));
+            var res = Take(1, CallFresh((q) => fives()(q))(EmptyState));
             res.ToString().must_equal("(((([0] . 5)) . 1))");
         }
 
@@ -78,7 +73,7 @@ namespace Tests
         public void It_ground_appendo()
         {
             //    res = car(ground_appendo.call(empty_state).call)
-            var res = Car(((Func<Object>)ground_appendo()(EmptyState))());
+            var res = Car(Call(ground_appendo()(EmptyState)));
 
             //# Expected result in scheme:
             //# (((#(2) b) (#(1)) (#(0) . a)) . 3)
@@ -92,7 +87,7 @@ namespace Tests
         [Test]
         public void It_ground_appendo2()
         {
-            var res = Car(((Func<Object>)ground_appendo2()(EmptyState))()).ToString();
+            var res = Car(Call(ground_appendo2()(EmptyState))).ToString();
             res.must_equal("((([2] b) ([1]) ([0] . a)) . 3)");
         }
 

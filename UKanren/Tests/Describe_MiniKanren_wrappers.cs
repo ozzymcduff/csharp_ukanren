@@ -9,7 +9,7 @@ namespace Tests
         [Test]
         public void It_advances_the_stream_until_it_matures()
         {
-            var stream = new Func<Func<int>>(() => { return () => { return 42; }; });
+            var stream = new Func<Func<int>>(() => () => 42);
             Pull(stream).must_equal(42);
         }
         [Test]
