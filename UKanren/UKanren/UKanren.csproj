@@ -39,7 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cons.cs" />
+    <Compile Include="Pair.cs" />
     <Compile Include="Core.cs" />
     <Compile Include="Lisp.cs" />
     <Compile Include="ObjectExtensions.cs" />

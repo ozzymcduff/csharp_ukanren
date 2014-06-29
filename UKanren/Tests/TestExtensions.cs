@@ -29,7 +29,7 @@ namespace Tests
 
         public static void must_be_nil(this object o)
         {
-            Assert.That(o,Is.EqualTo(Cons.Nil));
+            Assert.That(o,Is.EqualTo(Pair.Nil));
         }
         public static bool is_even(this object i)
         {

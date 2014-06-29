@@ -4,18 +4,18 @@ using System.Text;
 
 namespace MicroKanren
 {
-    public abstract class Cons
+    public abstract class Pair
     {
-        public static EmptyCons Nil
+        public static EmptyPair Nil
         {
-            get { return new EmptyCons(); }
+            get { return new EmptyPair(); }
         }
 
         public abstract String ToString(bool consInCdr);
 
-        public static Cons New(object car, object cdr)
+        public static Pair New(object car, object cdr)
         {
-            return new Cons<object, object>(car ?? Nil, cdr ?? Nil);
+            return new Pair<object, object>(car ?? Nil, cdr ?? Nil);
         }
         public virtual object Car
         {
@@ -29,16 +29,16 @@ namespace MicroKanren
 
         public override bool Equals(object obj)
         {
-            return obj is Cons && Equals(obj as Cons);
+            return obj is Pair && Equals(obj as Pair);
         }
 
-        public virtual bool Equals(Cons other)
+        public virtual bool Equals(Pair other)
         {
-            if (other is EmptyCons && this is EmptyCons)
+            if (other is EmptyPair && this is EmptyPair)
                 return true;
-            if (other is EmptyCons && !(this is EmptyCons))
+            if (other is EmptyPair && !(this is EmptyPair))
                 return false;
-            if (!(other is EmptyCons) && this is EmptyCons)
+            if (!(other is EmptyPair) && this is EmptyPair)
                 return false; 
             return Equals(Car, other.Car) && Equals(Cdr, other.Cdr);
         }
@@ -57,7 +57,7 @@ namespace MicroKanren
         }
     }
 
-    public class EmptyCons : Cons
+    public class EmptyPair : Pair
     {
         public override string ToString(bool consInCdr)
         {
@@ -71,7 +71,7 @@ namespace MicroKanren
 
         public override bool Equals(object obj)
         {
-            return obj is EmptyCons;
+            return obj is EmptyPair;
         }
 
         public override int GetHashCode()
@@ -80,7 +80,7 @@ namespace MicroKanren
         }
     }
 
-    public class Cons<T1, T2> : Cons
+    public class Pair<T1, T2> : Pair
     {
         public override Object Car { get { return CarT ; } }
         public override Object Cdr { get { return CdrT ; } }
@@ -94,7 +94,7 @@ namespace MicroKanren
         /// </summary>
         /// <param name="car"></param>
         /// <param name="cdr"></param>
-        public Cons(T1 car, T2 cdr)
+        public Pair(T1 car, T2 cdr)
         {
             if (Equals(car, null))
             {
@@ -120,11 +120,11 @@ namespace MicroKanren
         public override String ToString(bool consInCdr)
         {
             var str = new StringBuilder(consInCdr ? "" : "(");
-            str.Append((this.Car is Cons) ? this.Car.ToString() : AtomString(this.Car));
+            str.Append((this.Car is Pair) ? this.Car.ToString() : AtomString(this.Car));
 
             str.Append(TypeMatch.Case(this.Cdr,
-                (EmptyCons e) => string.Empty,
-                (Cons c) => " " + c.ToString(true),
+                (EmptyPair e) => string.Empty,
+                (Pair c) => " " + c.ToString(true),
                 o => " . " + AtomString(o)));
 
             return consInCdr ? str.ToString() : str.Append(")").ToString();
@@ -135,7 +135,7 @@ namespace MicroKanren
         private static string AtomString(object car)
         {
             return TypeMatch.Case(car,
-                (EmptyCons e) => string.Empty,
+                (EmptyPair e) => string.Empty,
                 (String s) => s.Inspect(),
                 (char c) => c.Inspect(),
                 (IEnumerable e) => e.Inspect(),

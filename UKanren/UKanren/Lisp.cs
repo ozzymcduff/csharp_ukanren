@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace MicroKanren
@@ -7,13 +6,13 @@ namespace MicroKanren
 
     public class Lisp
     {
-        public Symbol Sym(string name)
+        public static Symbol Sym(string name)
         {
             return new Symbol(name);
         }
 
-        public Cons Nil { get { return MicroKanren.Cons.Nil; } }
-        public bool Truthy(object s)
+        public static Pair Nil { get { return Pair.Nil; } }
+        public static bool Truthy(object s)
         {
             if (Nil.Equals(s))
             {
@@ -23,7 +22,7 @@ namespace MicroKanren
             {
                 throw new Exception(s.ToString());
             }
-            if (s is Cons)
+            if (s is Pair)
             {
                 return true;//throw new Exception(s.ToString());
             }
@@ -38,15 +37,15 @@ namespace MicroKanren
             return false;
         }
 
-        public int Length(Cons list)
+        public static int Length(Pair list)
         {
-            return list.IsNil() ? 0 : 1 + Length((Cons)Cdr(list));
+            return list.IsNil() ? 0 : 1 + Length((Pair)Cdr(list));
         }
-        public Cons List(params object[] values)
+        public Pair List(params object[] values)
         {
             return ListArray(values);
         }
-        public Cons ListArray(object[] values)
+        public Pair ListArray(object[] values)
         {
             if (values.empty())
             {
@@ -55,43 +54,43 @@ namespace MicroKanren
             return Cons(values.First(), ListArray(values.Skip(1).ToArray()));
         }
 
-        public Cons Map(Func<object, object> func, object list)
+        public static Pair Map(Func<object, object> func, object list)
         {
             if (Truthy(list))
                 return Cons(func(Car(list)), Map(func, Cdr(list)));
             return Nil;
         }
 
-        public bool IsProcedure(object elt)
+        public static bool IsProcedure(object elt)
         {
             return elt is Delegate;
         }
 
-        public object Call(object elt)
+        public static object Call(object elt)
         {
             if (elt is Delegate)
             {
                 return ((Delegate)elt).DynamicInvoke();
             }
-            throw new Exception("Not a func!");
+            throw new Exception(string.Format("Expected <Delegate>, but was given: {0}", elt.GetType()));
         }
 
-        public Cons Cons<T1, T2>(T1 car, T2 cdr)
+        public static Pair Cons<T1, T2>(T1 car, T2 cdr)
         {
-            return new Cons<T1, T2>(car, cdr);
+            return new Pair<T1, T2>(car, cdr);
         }
 
         /// <summary>
         /// Advances a stream until it matures. Per microKanren document 5.2, "From
         /// Streams to Lists."
         /// </summary>
-        public object Pull(object stream)
+        public static object Pull(object stream)
         {
             //  stream.is_a?(Proc) && !cons?(stream) ? pull(stream.call) : stream
             return IsProcedure(stream) && !IsCons(stream) ? Pull(Call(stream)) : stream;
         }
 
-        public object Take(int n, object stream)
+        public static object Take(int n, object stream)
         {
             object cur;
             if (n > 0)
@@ -101,38 +100,38 @@ namespace MicroKanren
             return Nil;
         }
 
-        public bool IsCons(object d)
+        public static bool IsCons(object d)
         {
-            return d is Cons && !(d is EmptyCons);
+            return d is Pair && !(d is EmptyPair);
         }
 
-        public bool IsPair(object d)
+        public static bool IsPair(object d)
         {
             return IsCons(d);
         }
 
-        public Cons EmptyState { get { return Cons(Mzero, 0); } }
+        public static Pair EmptyState { get { return Cons(Mzero, 0); } }
 
-        public object Car(object cons)
+        public static object Car(object cons)
         {
-            if (cons is Cons)
+            if (cons is Pair)
             {
-                return ((Cons)cons).Car;
+                return ((Pair)cons).Car;
             }
-            throw new Exception("Not cons [" + cons.GetType() + "]->" + cons);
+            throw new Exception(string.Format("expects argument of type <Pair>, but was given {0}", cons.GetType()) );
         }
-        public object Cdr(object cons)
+        public static object Cdr(object cons)
         {
-            if (cons is Cons)
+            if (cons is Pair)
             {
-                return ((Cons)cons).Cdr;
+                return ((Pair)cons).Cdr;
             }
-            throw new Exception("Not cons [" + cons.GetType() + "]->" + cons);
+            throw new Exception(string.Format("expects argument of type <Pair>, but was given {0}", cons.GetType()));
         }
 
-        public Cons Mzero { get { return MicroKanren.Cons.Nil; } }
+        public static Pair Mzero { get { return Pair.Nil; } }
 
-        public object Assp(Func<Object, bool> func, object alist)
+        public static object Assp(Func<Object, bool> func, object alist)
         {
             if (Truthy(alist))
             {

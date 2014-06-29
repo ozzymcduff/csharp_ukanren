@@ -5,19 +5,19 @@ namespace MicroKanren
 {
     public class Core : Lisp
     {
-        public Cons Unit(Cons s_c)
+        public static Pair Unit(Pair s_c)
         {
             return Cons(s_c, Mzero);
         }
-        public Var Var(object c)
+        public static Var Var(object c)
         {
             return new Var(new[] { c });
         }
-        public bool IsVar(object x)
+        public static bool IsVar(object x)
         {
             return x is Var;
         }
-        public bool VarsEq(Var x1, Var x2)
+        public static bool VarsEq(Var x1, Var x2)
         {
             return x1.Equals(x2);
         }
@@ -25,7 +25,7 @@ namespace MicroKanren
         /// <summary>
         /// Walk environment S and look up value of U, if present.
         /// </summary>
-        public object Walk(object u, object s)
+        public static object Walk(object u, object s)
         {
             if (IsVar(u))
             {
@@ -37,12 +37,12 @@ namespace MicroKanren
                 return u;
         }
 
-        public Cons ExtS(object x, object v, object s)
+        public static Pair ExtS(object x, object v, object s)
         {
             return Cons(Cons(x, v), s);
         }
 
-        public object Unify(object u, object v, object s)
+        public static object Unify(object u, object v, object s)
         {
             u = Walk(u, s);
             v = Walk(v, s);
@@ -74,16 +74,16 @@ namespace MicroKanren
             }
         }
 
-        public Func<object, object> Disj(Func<object, object> g1, Func<object, object> g2)
+        public static Func<object, object> Disj(Func<object, object> g1, Func<object, object> g2)
         {
             return (s_c) => Mplus(g1.Call(s_c), g2.Call(s_c));
         }
-        public Func<object, object> Conj(Func<object, object> g1, Func<object, object> g2)
+        public static Func<object, object> Conj(Func<object, object> g1, Func<object, object> g2)
         {
-            return (s_c) => bind(g1.Call(s_c), g2);
+            return (s_c) => Bind(g1.Call(s_c), g2);
         }
 
-        public object bind(object d, Func<object, object> g)
+        public static object Bind(object d, Func<object, object> g)
         {
             if (Nil.Equals(d))
             {
@@ -91,14 +91,14 @@ namespace MicroKanren
             }
             else if (IsProcedure(d))
             {
-                return new Func<object>(() => bind(Call(d), g));
+                return new Func<object>(() => Bind(Call(d), g));
             }
             else
             {
-                return Mplus(g.Call(Car(d)), bind(Cdr(d), g));
+                return Mplus(g.Call(Car(d)), Bind(Cdr(d), g));
             }
         }
-        private object Mplus(object d1, object d2)
+        private static object Mplus(object d1, object d2)
         {
             if (Nil.Equals(d1))
             {
@@ -117,7 +117,7 @@ namespace MicroKanren
         /// Constrain u to be equal to v
         /// == in Scheme implementation, ≡ in uKanren papers.
         /// </summary>
-        public Func<object, object> Eq(Object u, Object v)
+        public static Func<object, object> Eq(Object u, Object v)
         {
             return (s_c) =>
             {
@@ -125,10 +125,11 @@ namespace MicroKanren
                 return Truthy(s) ? Unit(Cons(s, Cdr(s_c))) : Mzero;
             };
         }
+
         /// <summary>
         /// Call function f with a fresh variable.
         /// </summary>
-        public Func<object, object> CallFresh(Func<Var, Func<Cons, object>> f)
+        public static Func<object, object> CallFresh(Func<Var, Func<Pair, object>> f)
         {
             return (s_c) =>
             {
@@ -137,12 +138,12 @@ namespace MicroKanren
             };
         }
 
-        public Symbol ReifyName(object n)
+        public static Symbol ReifyName(object n)
         {
             return (string.Format("_.{0}",n)).to_sym();
         }
 
-        public Cons ReifyS(object v, Cons s)
+        public static Pair ReifyS(object v, Pair s)
         {
             v = Walk(v, s);
             if (IsVar(v))
@@ -161,14 +162,13 @@ namespace MicroKanren
 
         }
 
-
-        public Object Reify1st(object s_c)
+        public static Object Reify1st(object s_c)
         {
             var v = WalkStar(Var(0), Car(s_c)); //v = walk_star((var 0), car(s_c))
             return WalkStar(v, ReifyS(v, Nil)); //walk_star(v, reify_s(v, nil))
         }
 
-        public Object WalkStar(object v, object s)
+        public static Object WalkStar(object v, object s)
         {
             v = Walk(v, s);
             if (IsVar(v))
