@@ -17,7 +17,7 @@ To install MicroKanren, run the following command in the [Package Manager Consol
 The following example demonstrates how MicroKanren can be used from a simple program:
 
 ```csharp
-using 'MicroKanren'
+using MicroKanren;
 class SimpleProgram::Core{
     public string Do(){
         var res = CallFresh((q)=> Eq(q, 5) )(EmptyState);
