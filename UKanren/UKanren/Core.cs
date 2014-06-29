@@ -144,7 +144,7 @@ namespace MicroKanren
 
         public Symbol reify_name(object n)
         {
-            return ("_."+n+"").to_sym();
+            return (string.Format("_.{0}",n)).to_sym();
         }
 
         public Object reify_s(object v, object s)
