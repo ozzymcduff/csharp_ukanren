@@ -128,7 +128,7 @@ namespace MicroKanren
         /// <summary>
         /// Call function f with a fresh variable.
         /// </summary>
-        public Func<object, object> CallFresh(Func<object, Func<object, object>> f)
+        public Func<object, object> CallFresh(Func<Var, Func<Cons, object>> f)
         {
             return (s_c) =>
             {
