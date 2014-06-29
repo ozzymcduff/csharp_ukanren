@@ -18,7 +18,7 @@ The following example demonstrates how MicroKanren can be used from a simple pro
 
 ```csharp
 using MicroKanren;
-class SimpleProgram::Core{
+class SimpleProgram:Core{
     public string Do(){
         var res = CallFresh((q)=> Eq(q, 5) )(EmptyState);
         return res.ToString();
