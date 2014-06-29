@@ -13,7 +13,7 @@
     <copyright>Copyright 2014</copyright>
     <!--<releaseNotes></releaseNotes>-->
     <references>
-      <reference file="MikroKanren.dll" />
+      <reference file="MicroKanren.dll" />
     </references>
   </metadata>
 </package>
