@@ -144,7 +144,7 @@ namespace MicroKanren
 
         public Symbol reify_name(object n)
         {
-            return "_.#{n}".to_sym();
+            return ("_."+n+"").to_sym();
         }
 
         public Object reify_s(object v, object s)
@@ -152,12 +152,12 @@ namespace MicroKanren
             v = walk(v, s);
             if (is_var(v))
             {
-                var n = reify_name(length((Cons)s));
-                return cons(cons(v, n), s);
+                var n = reify_name(length((Cons)s)); //n = reify_name(length(s))
+                return cons(cons(v, n), s); //cons(cons(v, n), s)
             }
             else if (is_pair(v))
             {
-                return reify_s(cdr(v), reify_s(car(v), s));
+                return reify_s(cdr(v), reify_s(car(v), s));//reify_s(cdr(v), reify_s(car(v), s))
             }
             else
             {
@@ -169,17 +169,20 @@ namespace MicroKanren
 
         public Object reify_1st(object s_c)
         {
-            var v = walk_star(0, car(s_c));
-            return walk_star(v, reify_s(v, nil));
+            var v = walk_star(var(0), car(s_c)); //v = walk_star((var 0), car(s_c))
+            return walk_star(v, reify_s(v, nil)); //walk_star(v, reify_s(v, nil))
         }
 
         public Object walk_star(object v, object s)
         {
             v = walk(v, s);
-            if (is_var(v)){
+            if (is_var(v))
+            {
                 return v;
             }
-            else if (is_pair(v)){
+            //else
+            if (is_pair(v))
+            {
                 return cons(walk_star(car(v), s),
                     walk_star(cdr(v), s));
             }
