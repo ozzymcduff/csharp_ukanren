@@ -162,13 +162,13 @@ namespace MicroKanren
         }
 
 
-        public Object reify_1st(object s_c)
+        public Object Reify1st(object s_c)
         {
-            var v = walk_star(Var(0), Car(s_c)); //v = walk_star((var 0), car(s_c))
-            return walk_star(v, ReifyS(v, Nil)); //walk_star(v, reify_s(v, nil))
+            var v = WalkStar(Var(0), Car(s_c)); //v = walk_star((var 0), car(s_c))
+            return WalkStar(v, ReifyS(v, Nil)); //walk_star(v, reify_s(v, nil))
         }
 
-        public Object walk_star(object v, object s)
+        public Object WalkStar(object v, object s)
         {
             v = Walk(v, s);
             if (IsVar(v))
@@ -178,8 +178,8 @@ namespace MicroKanren
             //else
             if (IsPair(v))
             {
-                return Cons(walk_star(Car(v), s),
-                    walk_star(Cdr(v), s));
+                return Cons(WalkStar(Car(v), s),
+                    WalkStar(Cdr(v), s));
             }
             //else
             return v;
